@@ -1,0 +1,111 @@
+<nav class="nav">
+	<div class="nav-left">
+		<a class="nav-item is-brand">
+			<span class="icon">
+			<i class="fa fa-shopping-cart fa-5"></i> {{ _appService?.Supermercado?.nome }}
+      </span>
+		</a>
+	</div>
+
+	<div class="nav-center">
+		<a class="nav-item" href="#">
+			<span class="icon">
+        <i class="fa fa-facebook"></i>
+      </span>
+		</a>
+		<a class="nav-item" href="#">
+			<span class="icon">
+        <i class="fa fa-twitter"></i>
+      </span>
+		</a>
+	</div>
+
+	<span class="nav-toggle">
+    <span></span>
+	<span></span>
+	<span></span>
+	</span>
+
+
+	<div class="nav-right nav-menu">
+		<a routerLink="/home" class="nav-item">
+      Início
+    </a>
+
+		<span class="nav-item">
+			<a [hidden]="!getCep()" routerLink="/supermercado" href="#">
+				Supermercados
+			</a>
+		</span>
+
+		<span class="nav-item">
+			<a [hidden]="!_appService?.Supermercado" routerLink="/produto"  href="#">
+      Produto 
+    </a>
+		</span>
+
+
+
+		<a class="nav-item" href="#">
+      Blog
+    </a>
+
+		<my-login></my-login>
+
+	</div>
+
+</nav>
+
+<div [hidden]="!getCep()">
+	<router-outlet></router-outlet>
+</div>
+
+<div [hidden]="getCep()">
+
+	<section class="hero is-medium is-primary is-bold">
+		<div class="hero-body">
+			<div class="container">
+
+				<div class="columns is-vcentered">
+					<div class="column is-8 is-left">
+						<p class="title">Supermercados que atendem sua <strong>região</strong></p>
+						<p class="subtitle">Informando seu CEP. buscaremos os supermercados que atendem a sua região.</p>
+					</div>
+
+					<div class="column">
+						<form [formGroup]="form" (submit)="Cep()">
+							<div>
+								<div class="control is-grouped">
+									<div class="control has-icon is-expanded">
+										<input type="text" formControlName="cep" class="input is-flat is-large" placeholder="Digite o seu CEP.">
+										<i class="fa fa-user"></i>
+									</div>
+									<div class="control">
+										<input [disabled]="!form.valid" type="submit" value="Buscar" class="button is-large is-success">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+<footer class="footer">
+	<div class="container">
+		<div class="content has-text-centered">
+			<p>
+				<strong>Webmart</strong> construído com <a href="http://bulma.io/">Bulma</a>.
+				<!--<a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</a>.-->
+			</p>
+			<p>
+				<a class="icon" href="https://github.com/jgthms/bulma">
+					<i class="fa fa-shopping-cart"></i>
+				</a>
+			</p>
+		</div>
+	</div>
+</footer>

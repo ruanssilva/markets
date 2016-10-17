@@ -1,0 +1,46 @@
+<span class="nav-item">
+  <div [hidden]="user">
+  <a  (click)="Modal(true)" class="button" >
+        <span class="icon">
+          <i class="fa fa-twitter"></i>
+        </span>
+<span> Entrar</span>
+</a>
+</div>
+<div [hidden]="!user">
+	<a (click)="Logout()" class="button is-primary">
+		<span class="icon">
+            <i class="fa fa-download"></i>
+          </span>
+		<span>Sair</span>
+	</a>
+</div>
+</span>
+
+<form [formGroup]="form" (submit)="Login()">
+	<div class="modal {{ modal ? 'is-active': ''}}">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Olá, quem é você?</p>
+				<button (click)="Modal(false)" class="delete"></button>
+			</header>
+			<section class="modal-card-body">
+
+				<p class="control has-icon">
+					<input formControlName="email" class="input" type="email" placeholder="Email">
+					<i class="fa fa-envelope"></i>
+				</p>
+
+				<p class="control has-icon">
+					<input formControlName="password" class="input" type="password" placeholder="Password">
+					<i class="fa fa-lock"></i>
+				</p>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-primary" type="submit" [disabled]="!form.valid">Acessar minha conta</button>
+				<a (click)="Modal(false)" class="button">Cancelar</a>
+			</footer>
+		</div>
+	</div>
+</form>

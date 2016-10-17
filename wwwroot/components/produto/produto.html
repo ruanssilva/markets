@@ -1,0 +1,58 @@
+<section class="hero is-dark">
+	<div class="hero-body">
+		<div class="container">
+			<h1 class="title">
+				Produtos
+			</h1>
+			<h2 class="subtitle">
+				Prateleira do supermercado
+			</h2>
+		</div>
+	</div>
+</section>
+
+
+<div class="container is-fluid">
+
+	<div class="tabs is-medium">
+		<ul class="is-left">
+			<li class="is-active"><a (click)="Alert()">Pictures</a></li>
+			<li><a>Music</a></li>
+			<li><a>Videos</a></li>
+			<li><a>Documents</a></li>
+		</ul>
+		<ul class="is-center">
+			<li><a>Previous</a></li>
+			<li><a>Up</a></li>
+			<li><a>Next</a></li>
+		</ul>
+		<ul class="is-right">
+			<li><a>Search</a></li>
+		</ul>
+	</div>
+
+	<div class="columns is-multiline">
+		<div class="card item column is-2" *ngFor="let p of Array">
+			<div class="card-image">
+				<figure class="image is-4by3">
+					<img src="http://placehold.it/300x225" alt="">
+				</figure>
+			</div>
+			<div class="card-content">
+				<div class="media">					
+					<div class="media-content">
+						<p class="title is-5">{{ p.nome }}</p>
+						<p class="subtitle is-6"> {{ p.preco }}</p>
+					</div>
+				</div>
+
+				<div class="content">
+					{{ p.descricao }}. <a href="#">@bulmaio</a>.
+					<br>
+					<small>disponível</small>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
