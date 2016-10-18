@@ -62,16 +62,6 @@ export class SupermercadoProvider {
       .subscribe(data => {
         console.log(data);
       });
-
-
-    // return new Promise((resolve) => {
-    //   this.http.post('http://localhost:8080/api/produto', JSON.stringify(person), { headers: headers })
-    //     .map((res) => res.json())
-    //     .subscribe(data => {
-    //       this.data = data;
-    //       resolve(this.data);
-    //     });
-    // });
   }
 
 
