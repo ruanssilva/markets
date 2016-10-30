@@ -1,10 +1,13 @@
 export class Produto {
-    _id : String;
-    supermercado_id : String;
-    categoria_id : String;
-    nome : String;
-    descricao : String;
-    unidade : Boolean;
-    peso : Boolean;
-    preco : Number;
+    _id: string;
+    supermercado_id: string;
+    categoria_id: string;
+    codigo: string;
+    nome: string;
+    descricao: string;
+    unidade: Boolean;
+    peso: Boolean;
+    preco: number;
+
+    thumbnail: string;
 }

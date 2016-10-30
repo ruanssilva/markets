@@ -1,7 +1,7 @@
 export class Disponibilidade {
-    _id: String;
-    supermercado_id: String;
-    dia: String;
-    hora: String;
+    _id: string;
+    supermercado_id: string;
+    dia: string;
+    hora: string;
     lotacao: Number;
 }

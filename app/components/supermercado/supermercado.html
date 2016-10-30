@@ -2,10 +2,10 @@
 	<div class="hero-body">
 		<div class="container">
 			<h1 class="title">
-				Supermercados {{ _appService.Teste1 }}
+				Supermercados
 			</h1> 
 			<h2 class="subtitle">
-				Escolha supermercado de sua preferência próximo ao {{ cep }}
+				Escolha supermercado de sua preferência próximo ao {{ AppService.Cep }}
 			</h2>
 		</div>
 	</div>
@@ -19,24 +19,24 @@
 
 	<div class="columns">
 
-		<div class="card column" style="margin:5px;" *ngFor="let p of supermercados">
-			<a (click)="Supermercado(p._id)">
+		<div class="card column" style="margin:5px;" *ngFor="let supermercado of supermercados">
+			<a (click)="Supermercado(supermercado)">
 				<div class="card-image">
 					<figure class="image is-2by1">
-						<img src="https://api.adorable.io/avatars/150/supermercado{{p}}" alt="">
+						<img src="https://api.adorable.io/avatars/150/supermercado{{supermercado.nome}}" alt="">
 					</figure>
 				</div>
 				<div class="card-content">
 
 					<div class="media">
 						<div class="media-content">
-							<p class="title is-5">{{ p.nome }}</p>
-							<p class="subtitle is-6"> {{ p.descricao }}</p>
+							<p class="title is-5">{{ supermercado.nome }}</p>
+							<p class="subtitle is-6"> {{ supermercado.descricao }}</p>
 						</div>
 					</div>
 
 					<div class="content">
-						<button (click)="teste(p._id)">Gerar categoria </button> Rua Jorgina, 65 – Bairro Chiquita – Ipatinga/MG
+						Rua Jorgina, 65 – Bairro Chiquita – Ipatinga/MG
 						<br>
 						<br>
 						<small>

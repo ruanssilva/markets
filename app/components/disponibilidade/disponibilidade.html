@@ -1,0 +1,63 @@
+<section class="hero is-primary">
+	<div class="hero-body">
+		<div class="container">
+			<h1 class="title">
+				Forma de entrega
+			</h1>
+			<h2 class="subtitle">
+				Informe se vai fazer retirada no local ou AppService.Agendará a entrega
+			</h2>
+		</div>
+	</div>
+</section>
+
+<div class="container">
+	<div class="tabs is-large is-centered">
+		<ul>
+			<li (click)="Agendar(false)" [ngClass]="{'is-active': !AppService.Agendar }"><a>Retirada no local</a></li>
+			<li (click)="Agendar(true)" [ngClass]="{'is-active': AppService.Agendar }"><a>Agendar entrega</a></li>
+		</ul>
+	</div>
+	<div [hidden]="AppService.Agendar">
+		<h1>Horário de funcionamento</h1>
+
+
+	</div>
+	<div [hidden]="!AppService.Agendar">
+		<div class="tabs is-medium is-centered">
+			<ul>
+				<li [ngClass]="{'is-active': dia == 1 }" (click)="setDia(1)"><a>Domingo <i [ngClass]="{'fa': true, 'fa-remove': !getDia(1), 'fa-check': getDia(1) }"></i></a></li>
+				<li [ngClass]="{'is-active': dia == 2 }" (click)="setDia(2)"><a>Segunda <i [ngClass]="{'fa': true, 'fa-remove': !getDia(2), 'fa-check': getDia(2) }"></i></a></li>
+				<li [ngClass]="{'is-active': dia == 3 }" (click)="setDia(3)"><a>Terça <i [ngClass]="{'fa': true, 'fa-remove': !getDia(3), 'fa-check': getDia(3) }"></i></a></li>
+				<li [ngClass]="{'is-active': dia == 4 }" (click)="setDia(4)"><a>Quarta <i [ngClass]="{'fa': true, 'fa-remove': !getDia(4), 'fa-check': getDia(4) }"></i></a></li>
+				<li [ngClass]="{'is-active': dia == 5 }" (click)="setDia(5)"><a>Quinta <i [ngClass]="{'fa': true, 'fa-remove': !getDia(5), 'fa-check': getDia(5) }"></i></a></li>
+				<li [ngClass]="{'is-active': dia == 6 }" (click)="setDia(6)"><a>Sexta <i [ngClass]="{'fa': true, 'fa-remove': !getDia(6), 'fa-check': getDia(6) }"></i></a></li>
+				<li [ngClass]="{'is-active': dia == 7 }" (click)="setDia(7)"><a>Sábado <i [ngClass]="{'fa': true, 'fa-remove': !getDia(7), 'fa-check': getDia(7) }"></i></a></li>
+			</ul>
+		</div>
+
+		<div [hidden]="!(disponibilidades?.length > 0 && dia)">
+			<div class="tabs is-medium is-centered">
+				<ul>
+					<li [ngClass]="{'is-active': AppService.Disponibilidade?.hora == disponibilidade.hora }" (click)="Disponibilidade(disponibilidade)"
+						*ngFor="let disponibilidade of disponibilidades"><a>{{ disponibilidade.hora }}</a></li>
+				</ul>
+			</div>
+		</div>
+
+
+		<div>
+
+
+		</div>
+	</div>
+
+	<br/>
+
+	<div [hidden]="AppService.Agendar && !AppService.Disponibilidade" class="center">
+		<a (click)="Compras()" class="button is-primary is-large">
+            Ir para as compras <i class="fa fa-shopping-cart"></i>
+        </a>
+	</div>
+
+</div>

@@ -1,0 +1,43 @@
+<section class="hero is-primary">
+	<div class="hero-body">
+		<div class="container">
+			<h1 class="title">
+				CEP .
+			</h1>
+			<h2 class="subtitle">
+				Seu cep filha da puta
+			</h2>
+		</div>
+	</div>
+</section>
+
+
+<section class="hero is-medium is-primary is-bold">
+	<div class="hero-body">
+		<div class="container">
+
+			<div class="columns is-vcentered">
+				<div class="column is-8 is-left">
+					<p class="title">Supermercados que atendem sua <strong>região</strong></p>
+					<p class="subtitle">Informando seu CEP. buscaremos os supermercados que atendem a sua região.</p>
+				</div>
+
+				<div class="column">
+					<form [formGroup]="form" (submit)="Cep()">
+						<div>
+							<div class="control is-grouped">
+								<div class="control has-icon is-expanded">
+									<input type="text" formControlName="cep" class="input is-flat is-large" placeholder="Digite o seu CEP.">
+									<i class="fa fa-user"></i>
+								</div>
+								<div class="control">
+									<input [disabled]="!form.valid" type="submit" value="Buscar" class="button is-large is-success">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

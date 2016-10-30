@@ -27,7 +27,8 @@ var LoginComponent = (function () {
             id: "1",
             nome: "Ruan Silva",
             email: "ruansilva@outlook.com",
-            cep: "35164-403"
+            cep: "35164-403",
+            enderecos: []
         };
         this.nome = this.user.nome;
         alert(this.email.value);

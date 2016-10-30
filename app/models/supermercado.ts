@@ -1,8 +1,8 @@
 export class Supermercado {
-    _id : String;
-    nome : String;
-    descricao : String;
-    longitude : String;
-    latitude : String;
-    range : Number;
+    _id : string;
+    nome : string;
+    descricao : string;
+    longitude : string;
+    latitude : string;
+    range : string;
 }

@@ -2190,8 +2190,14 @@
   overflow: visible;
   clip: auto; }
 
-.home {
-  background-color: #f00; }
-
 .about {
   background-color: #f99; }
+
+.center {
+  text-align: center !important; }
+
+.right {
+  text-align: right !important; }
+
+.left {
+  text-align: left !important; }

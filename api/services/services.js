@@ -6,6 +6,7 @@ var morgan = require('morgan');             // log requests to the console (expr
 var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
 var cors = require('cors');
+var csv = require("fast-csv");
 
 // Configuration
 mongoose.connect('mongodb://localhost/webmart');
@@ -31,7 +32,7 @@ var Supermercado = mongoose.model('supermercado', {
     descricao: String,
     longitude: String,
     latitude: String,
-    range : Number,
+    range: Number,
 });
 
 var Categoria = mongoose.model('categoria', {
@@ -41,56 +42,101 @@ var Categoria = mongoose.model('categoria', {
 });
 
 var Produto = mongoose.model('produto', {
-    produtoid: String,
+    supermercado_id: String,
+    categoria_id: String,
+    codigo: String,
     nome: String,
     descricao: String,
+    unidade: Boolean,
+    peso: Boolean,
     preco: Number
 });
 
+var Disponibilidade = mongoose.model('disponibilidade', {
+    supermercado_id: String,
+    dia: String,
+    hora: String,
+    lotacao: Number
+});
+
+var Carrinho = mongoose.model('carrinho', {
+    supermercado_id: String,
+    compras: [{
+        produto_id: String,
+        quantidade: Number,
+        valor: Number
+    }],
+    horario: String
+});
+
+
+app.get('/api/teste', function (req, res) {
+    console.log('get: api/teste/');
+
+    csv
+        .fromPath("g://my.csv")
+        .on("data", function (data) {
+            console.log(data);
+
+            Produto.create({
+                supermercado_id: req.body.supermercado_id,
+                categoria_id: data[6],
+                codigo: data[0],
+                nome: data[1],
+                descricao: data[2],
+                unidade: data[4] == "1",
+                peso: data[5] == "1",
+                preco: Number(data[3]) 
+            }, function (err, data) {
+                if (err)
+                    console.log(err);
+            });
+
+        })
+        .on("end", function () {
+            console.log("done");
+        });
+
+    res.json(null);
+});
 
 // Get supermercado
 app.get('/api/supermercado', function (req, res) {
-    // use mongoose to get all reviews in the database
-    Supermercado.find(function (err, reviews) {
-
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+    console.log('get: api/supermercado/');
+    Supermercado.find(function (err, data) {
         if (err)
             res.send(err)
 
-        res.json(reviews); // return all reviews in JSON format
+        res.json(data);
     });
 });
 
+// Get supermercado
 app.get('/api/supermercado/:id', function (req, res) {
 
-    console.log('get: supermercado/id');
-    // use mongoose to get all reviews in the database
-    Supermercado.findOne({ _id : req.params.id },function (err, reviews) {
-
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+    console.log('get: api/supermercado/id');
+    Supermercado.findOne({ _id: req.params.id }, function (err, data) {
         if (err)
             res.send(err)
 
-        res.json(reviews); // return all reviews in JSON format
+        res.json(data);
     });
 });
 
 // Get categoria
 app.get('/api/categoria', function (req, res) {
-    // use mongoose to get all reviews in the database
-    Categoria.find(function (err, reviews) {
-
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+    console.log('get: api/categoria/');
+    Categoria.find(function (err, data) {
         if (err)
             res.send(err)
-
-        res.json(reviews); // return all reviews in JSON format
+        res.json(data);
     });
 });
 
+// Get categoria
 app.get('/api/categoria/supermercado/:id', function (req, res) {
-    console.log('get: categoria/supermercado/id');
-    Categoria.find({ supermercado_id : req.params.id },function (err, result) {
+    console.log('get: api/categoria/supermercado/id');
+    Categoria.find({ supermercado_id: req.params.id }, function (err, result) {
         if (err)
             res.send(err);
         res.json(result);
@@ -99,61 +145,148 @@ app.get('/api/categoria/supermercado/:id', function (req, res) {
 
 // Post categoria
 app.post('/api/categoria', function (req, res) {
+    console.log('post: api/categoria/');
     Categoria.create({
         supermercado_id: req.body.supermercado_id,
         nome: req.body.nome,
         descricao: req.body.descricao
-    }, function (err, review) {
+    }, function (err, data) {
         if (err)
             res.send(err);
-        Categoria.find(function (err, reviews) {
+        Categoria.find(function (err, data) {
             if (err)
                 res.send(err)
-            res.json(reviews);
+            res.json(data);
         });
     });
 });
 
 // Get produto
 app.get('/api/produto', function (req, res) {
-    // use mongoose to get all reviews in the database
-    Produto.find(function (err, reviews) {
-
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+    console.log('get: api/produto/');
+    Produto.find(function (err, data) {
         if (err)
-            res.send(err)
+            res.send(err);
 
-        res.json(reviews); // return all reviews in JSON format
+console.log(data);
+
+        res.json(data);
     });
 });
 
-app.post('/api/produto', function (req, res) {
-    Produto.create({
-        produtoid: req.body.produtoid,
-        nome: req.body.nome,
-        descricao: req.body.descricao,
-        preco: req.body.preco,
-    }, function (err, review) {
+// Get produto
+app.get('/api/produto/categoria/:id', function (req, res) {
+    console.log('get: api/produto/categoria/id');
+    Produto.find({ categoria_id: req.params.id }, function (err, result) {
         if (err)
             res.send(err);
-        Produto.find(function (err, reviews) {
+        res.json(result);
+    });
+});
+
+// Post produto
+app.post('/api/produto', function (req, res) {
+    console.log('post: api/produto/');
+    Produto.create({
+        supermercado_id: req.body.supermercado_id,
+        categoria_id: req.body.categoria_id,
+        codigo: req.body.codigo,
+        nome: req.body.nome,
+        descricao: req.body.descricao,
+        unidade: req.body.unidade,
+        peso: req.body.peso,
+        preco: req.body.preco
+    }, function (err, data) {
+        if (err)
+            res.send(err);
+        Produto.find(function (err, data) {
             if (err)
                 res.send(err)
-            res.json(reviews);
+            res.json(data);
         });
     });
 });
 
-// delete a review
-app.delete('/api/produto/:_id', function (req, res) {
-    Review.remove({
-        _id: req.params._id
-    }, function (err, review) {
 
+// Post disponibilidade
+app.post('/api/disponibilidade', function (req, res) {
+    console.log('post: api/disponibilidade/');
+    Disponibilidade.create({
+        supermercado_id: req.body.supermercado_id,
+        dia: req.body.dia,
+        hora: req.body.hora,
+        lotacao: req.body.lotacao,
+    }, function (err, data) {
+        if (err)
+            res.send(err);
+        res.json(data);
+    });
+});
+
+// Get disponibilidade
+app.get('/api/disponibilidade/:id', function (req, res) {
+
+    console.log('get: api/disponibilidade/id');
+    Disponibilidade.findOne({ _id: req.params.id }, function (err, data) {
+        if (err)
+            res.send(err)
+
+        res.json(data);
+    });
+});
+
+// Get disponibilidade
+app.get('/api/disponibilidade/supermercado/:id', function (req, res) {
+    console.log('get: api/disponibilidade/supermercado/id');
+    Disponibilidade.find({ supermercado_id: req.params.id }, function (err, result) {
+        if (err)
+            res.send(err);
+        res.json(result);
     });
 });
 
 
-// listen (start app with node server.js) ======================================
+// Get carrinho
+app.get('/api/carrinho/:id', function (req, res) {
+    console.log('get: api/carrinho/id');
+    if (req.params.id != 'null')
+        Carrinho.findOne({ _id: req.params.id }, function (err, data) {
+            if (err)
+                res.send(err);
+            res.json(data);
+        });
+    else
+        res.json(null);
+});
+
+// Post carrinho
+app.post('/api/carrinho', function (req, res) {
+    console.log('post: api/carrinho/');
+    Carrinho.create({
+        supermercado_id: req.body.supermercado_id,
+        compras: req.body.compras,
+        horario: req.body.horario
+    }, function (err, data) {
+        if (err)
+            res.send(err);
+        res.json(data);
+    });
+});
+
+// Put carrinho
+app.put('/api/carrinho', function (req, res) {
+    console.log('put: api/carrinho/');
+    Carrinho.update({ _id: req.body._id }, {
+        supermercado_id: req.body.supermercado_id,
+        compras: req.body.compras,
+        horario: req.body.horario
+    }, function (err, data) {
+        if (err)
+            res.send(err);
+        res.json(data);
+    });
+});
+
+
 app.listen(8080);
 console.log("App listening on port 8080");

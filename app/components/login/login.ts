@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup,FormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { User } from '../../models/user'
 
@@ -17,6 +17,7 @@ export class LoginComponent {
     public email: FormControl;
     public password: FormControl;
 
+
     /**
      *
      */
@@ -25,7 +26,7 @@ export class LoginComponent {
 
         this.email = new FormControl('', Validators.required);
         this.password = new FormControl('', Validators.required);
-        
+
         this.form.addControl('email', this.email);
         this.form.addControl('password', this.password);
 
@@ -41,7 +42,8 @@ export class LoginComponent {
             id: "1",
             nome: "Ruan Silva",
             email: "ruansilva@outlook.com",
-            cep: "35164-403"
+            cep: "35164-403",
+            enderecos: []
         };
 
         this.nome = this.user.nome;

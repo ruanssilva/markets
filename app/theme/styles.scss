@@ -1,3 +1,15 @@
 @import "scss/font-awesome";
 @import "../components/home/home";
 @import "../components/about/about"; 
+
+.center {
+    text-align: center!important;
+} 
+
+.right {
+    text-align: right!important;
+}
+
+.left {
+    text-align: left!important;
+}

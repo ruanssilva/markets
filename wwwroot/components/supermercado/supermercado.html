@@ -1,1 +1,90 @@
-<h1>Supermecado</h1>
+<section class="hero is-primary">
+	<div class="hero-body">
+		<div class="container">
+			<h1 class="title">
+				Supermercados
+			</h1> 
+			<h2 class="subtitle">
+				Escolha supermercado de sua preferência próximo ao {{ AppService.Cep }}
+			</h2>
+		</div>
+	</div>
+</section>
+
+
+<br/>
+
+<div class="container">
+	<h1 [hidden]="supermercados != null">Carregando...</h1>
+
+	<div class="columns">
+
+		<div class="card column" style="margin:5px;" *ngFor="let supermercado of supermercados">
+			<a (click)="Supermercado(supermercado)">
+				<div class="card-image">
+					<figure class="image is-2by1">
+						<img src="https://api.adorable.io/avatars/150/supermercado{{supermercado.nome}}" alt="">
+					</figure>
+				</div>
+				<div class="card-content">
+
+					<div class="media">
+						<div class="media-content">
+							<p class="title is-5">{{ supermercado.nome }}</p>
+							<p class="subtitle is-6"> {{ supermercado.descricao }}</p>
+						</div>
+					</div>
+
+					<div class="content">
+						Rua Jorgina, 65 – Bairro Chiquita – Ipatinga/MG
+						<br>
+						<br>
+						<small>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						</small>
+					</div>
+
+				</div>
+			</a>
+		</div>
+
+
+
+	</div>
+
+</div>
+
+
+<br/>
+
+<section class="hero is-primary">
+	<div class="hero-body">
+		<div class="container">
+
+			<div class="columns is-vcentered">
+				<div class="column is-one-third is-left">
+					<p class="title">Webmart <strong>Supermercados</strong></p>
+					<p class="subtitle">Quem você gostaria de ver por aqui?</p>
+				</div>
+
+				<div class="column">
+					<form>
+						<div>
+							<div class="control is-grouped">
+								<div class="control has-icon is-expanded">
+									<input type="email" class="input is-large is-flat" placeholder="digite o supermercado">
+									<i class="fa fa-shopping-cart"></i>
+								</div>
+								<div class="control">
+									<input type="submit" value="Indique-o" class="button is-large is-white is-outlined">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
