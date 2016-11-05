@@ -3,6 +3,8 @@ import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/observable'
 import 'rxjs/add/operator/map';
 
+import { HttpProvider } from './http'
+
 import { Categoria } from '../models/categoria'
 
 @Injectable()
@@ -10,40 +12,46 @@ export class CategoriaProvider {
 
     data: any;
 
-    constructor(private http: Http) {
+    constructor(
+        private http: Http,
+        private HttpProvider : HttpProvider
+    ) {
         this.data = null;
     }
 
     get() {
-        return this.http.get("http://192.168.25.8:8080/api/categoria")
+        return this.HttpProvider.get("http://192.168.25.9:8080/api/categoria")
             .map((res) => res.json());
     }
 
-    post(categoria) {
+    post(categoria : Categoria) {
 
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-
-        this.http.post("http://192.168.25.8:8080/api/categoria", JSON.stringify(categoria), { headers: headers })
+        this.HttpProvider.post("http://192.168.25.9:8080/api/categoria", categoria)
             .map((res) => res.json())
             .subscribe(data => {
                 console.log(data);
             });
-        // return new Promise((resolve) => {
-        //   this.http.post('http://192.168.25.8:8080/api/produto', JSON.stringify(person), { headers: headers })
-        //     .map((res) => res.json())
-        //     .subscribe(data => {
-        //       this.data = data;
-        //       resolve(this.data);
-        //     });
-        // });
+    }
+
+    getByTipo(tipo: String, supermercado : String): Promise<Array<Categoria>> {
+
+        return new Promise(resolve => {
+
+            this.HttpProvider.get(`http://192.168.25.9:8080/api/categoria/supermercado/${ supermercado }/tipo/${tipo}`)
+                .map((res) => res.json() as Array<Categoria>)
+                .subscribe(data => {
+                    resolve(data); 
+                }); 
+
+
+        });
     }
 
     getBySupermercado(id: String): Promise<Array<Categoria>> {
 
         return new Promise(resolve => {
 
-            this.http.get(`http://192.168.25.8:8080/api/categoria/supermercado/${id}`)
+            this.HttpProvider.get(`http://192.168.25.9:8080/api/categoria/supermercado/${id}`)
                 .map((res) => res.json() as Array<Categoria>)
                 .subscribe(data => {
                     resolve(data); 

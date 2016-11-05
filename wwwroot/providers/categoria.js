@@ -11,36 +11,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var http_2 = require('./http');
 var CategoriaProvider = (function () {
-    function CategoriaProvider(http) {
+    function CategoriaProvider(http, HttpProvider) {
         this.http = http;
+        this.HttpProvider = HttpProvider;
         this.data = null;
     }
     CategoriaProvider.prototype.get = function () {
-        return this.http.get("http://192.168.25.8:8080/api/categoria")
+        return this.HttpProvider.get("http://192.168.25.9:8080/api/categoria")
             .map(function (res) { return res.json(); });
     };
     CategoriaProvider.prototype.post = function (categoria) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        this.http.post("http://192.168.25.8:8080/api/categoria", JSON.stringify(categoria), { headers: headers })
+        this.HttpProvider.post("http://192.168.25.9:8080/api/categoria", categoria)
             .map(function (res) { return res.json(); })
             .subscribe(function (data) {
             console.log(data);
         });
-        // return new Promise((resolve) => {
-        //   this.http.post('http://192.168.25.8:8080/api/produto', JSON.stringify(person), { headers: headers })
-        //     .map((res) => res.json())
-        //     .subscribe(data => {
-        //       this.data = data;
-        //       resolve(this.data);
-        //     });
-        // });
+    };
+    CategoriaProvider.prototype.getByTipo = function (tipo, supermercado) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/categoria/supermercado/" + supermercado + "/tipo/" + tipo)
+                .map(function (res) { return res.json(); })
+                .subscribe(function (data) {
+                resolve(data);
+            });
+        });
     };
     CategoriaProvider.prototype.getBySupermercado = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/categoria/supermercado/" + id)
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/categoria/supermercado/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -49,7 +51,7 @@ var CategoriaProvider = (function () {
     };
     CategoriaProvider = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, http_2.HttpProvider])
     ], CategoriaProvider);
     return CategoriaProvider;
 }());

@@ -9,12 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var forms_1 = require('@angular/forms');
+var app_service_1 = require('../../app.service');
 var LoginComponent = (function () {
     /**
      *
      */
-    function LoginComponent() {
+    function LoginComponent(AppService, Router) {
+        this.AppService = AppService;
+        this.Router = Router;
         this.modal = false;
         this.form = new forms_1.FormGroup({});
         this.email = new forms_1.FormControl('', forms_1.Validators.required);
@@ -22,6 +26,11 @@ var LoginComponent = (function () {
         this.form.addControl('email', this.email);
         this.form.addControl('password', this.password);
     }
+    LoginComponent.prototype.ngOnInit = function () {
+        this.AppService.__getUsuario()
+            .then(function (wait) {
+        });
+    };
     LoginComponent.prototype.Login = function () {
         this.user = {
             id: "1",
@@ -35,7 +44,11 @@ var LoginComponent = (function () {
         this.Modal(false);
     };
     LoginComponent.prototype.Logout = function () {
-        this.user = null;
+        var _this = this;
+        this.AppService.__setToken(null)
+            .then(function (wait) {
+            _this.Router.navigateByUrl('/');
+        });
     };
     LoginComponent.prototype.Modal = function (show) {
         this.modal = show;
@@ -45,7 +58,7 @@ var LoginComponent = (function () {
             selector: 'my-login',
             templateUrl: './app/components/login/login.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [app_service_1.AppService, router_1.Router])
     ], LoginComponent);
     return LoginComponent;
 }());

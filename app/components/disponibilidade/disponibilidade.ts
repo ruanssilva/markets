@@ -67,6 +67,17 @@ export class DisponibilidadeComponent implements OnInit {
         return result;
     }
 
+    Dia(dia: string): void {
+        this.AppService.Disponibilidade = null;
+
+        this.dia = dia;
+        this.disponibilidades = [];
+        this.AppService.Disponibilidades.forEach(disponibilidade => {
+            if (disponibilidade.dia == dia)
+                this.disponibilidades.push(disponibilidade);
+        });
+    }
+
     setDia(dia: string): void {
         this.AppService.Disponibilidade = null;
 

@@ -11,14 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var http_2 = require('./http');
 var CarrinhoProvider = (function () {
-    function CarrinhoProvider(http) {
+    function CarrinhoProvider(http, HttpProvider) {
         this.http = http;
+        this.HttpProvider = HttpProvider;
     }
     CarrinhoProvider.prototype.getById = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/carrinho/" + id)
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/carrinho/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -27,22 +29,18 @@ var CarrinhoProvider = (function () {
     };
     CarrinhoProvider.prototype.put = function (carrinho) {
         var _this = this;
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
         return new Promise(function (resolve) {
-            _this.http.put("http://192.168.25.8:8080/api/carrinho", JSON.stringify(carrinho), { headers: headers })
+            _this.HttpProvider.put("http://192.168.25.9:8080/api/carrinho", carrinho)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
             });
         });
     };
-    CarrinhoProvider.prototype.post = function (Carrinho) {
+    CarrinhoProvider.prototype.post = function (carrinho) {
         var _this = this;
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
         return new Promise(function (resolve) {
-            _this.http.post("http://192.168.25.8:8080/api/carrinho", JSON.stringify(Carrinho), { headers: headers })
+            _this.HttpProvider.post("http://192.168.25.9:8080/api/carrinho", carrinho)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -51,7 +49,7 @@ var CarrinhoProvider = (function () {
     };
     CarrinhoProvider = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, http_2.HttpProvider])
     ], CarrinhoProvider);
     return CarrinhoProvider;
 }());

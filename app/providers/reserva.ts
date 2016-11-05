@@ -21,7 +21,7 @@ export class ReservaProvider {
 
         return new Promise(resolve => {
 
-            return this.http.get("http://192.168.25.8:8080/api/reserva")
+            return this.http.get("http://192.168.25.9:8080/api/reserva")
                 .map((res) => res.json() as Array<Reserva>)
                 .subscribe(data => {
                     resolve(data);
@@ -37,7 +37,7 @@ export class ReservaProvider {
 
         return new Promise(resolve => {
 
-            this.http.get(`http://192.168.25.8:8080/api/reserva/${id}`)
+            this.http.get(`http://192.168.25.9:8080/api/reserva/${id}`)
                 .map((res) => res.json() as Reserva)
                 .subscribe(data => {
                     resolve(data);
@@ -54,7 +54,7 @@ export class ReservaProvider {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
 
-            this.http.post("http://192.168.25.8:8080/api/reserva", JSON.stringify(reserva), { headers: headers })
+            this.http.post("http://192.168.25.9:8080/api/reserva", JSON.stringify(reserva), { headers: headers })
                 .map((res) => res.json())
                 .subscribe(data => {
                     resolve(data);

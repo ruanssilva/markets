@@ -1,6 +1,14 @@
 @import "scss/font-awesome";
 @import "../components/home/home";
+@import "../components/login/login";
+@import "../components/disponibilidade/disponibilidade";
+@import "../components/produto/produto";
 @import "../components/about/about"; 
+@import "../components/entrar/entrar"; 
+
+[hidden] {
+    display: none !important;
+}
 
 .center {
     text-align: center!important;
@@ -12,4 +20,4 @@
 
 .left {
     text-align: left!important;
-}
+}  

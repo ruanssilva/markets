@@ -1,16 +1,21 @@
-import { NgModule } from '@angular/core';
+import { NgModule, OnInit } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { LoginProvider } from '../../providers/login'
+
 import { User } from '../../models/user'
+
+import { AppService } from '../../app.service'
 
 @Component({
     selector: 'my-login',
     templateUrl: './app/components/login/login.html'
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
     public form: FormGroup;
 
@@ -21,7 +26,10 @@ export class LoginComponent {
     /**
      *
      */
-    constructor() {
+    constructor(
+        private AppService: AppService,
+        private Router: Router
+    ) {
         this.form = new FormGroup({});
 
         this.email = new FormControl('', Validators.required);
@@ -30,6 +38,13 @@ export class LoginComponent {
         this.form.addControl('email', this.email);
         this.form.addControl('password', this.password);
 
+    }
+
+    ngOnInit() {
+        this.AppService.__getUsuario()
+            .then(wait => {
+                
+            })
     }
 
     public modal: boolean = false;
@@ -54,7 +69,10 @@ export class LoginComponent {
     }
 
     Logout(): void {
-        this.user = null;
+        this.AppService.__setToken(null)
+            .then(wait => {
+                this.Router.navigateByUrl('/');
+            })
     }
 
     Modal(show: boolean): void {

@@ -29,14 +29,12 @@ var ProdutoComponent = (function () {
         var _this = this;
         this.AppService.__getSupermercado()
             .then(function (wait) {
-            _this.CategoriaProvider.getBySupermercado(wait._id)
-                .then(function (wait2) {
-                _this.categorias = wait2;
-            });
+            _this.categorias = [];
+            // this.CategoriaProvider.getBySupermercado(wait._id)
+            //     .then(wait2 => {
+            //         this.categorias = wait2;
+            //     });
         });
-    };
-    ProdutoComponent.prototype.Pesquisa = function () {
-        this.pesquisa = true;
     };
     ProdutoComponent.prototype.Adicionar = function (produto) {
         var r = false;
@@ -44,6 +42,8 @@ var ProdutoComponent = (function () {
             if (element.produto_id == produto._id) {
                 element.quantidade++;
                 element.valor = produto.preco * element.quantidade;
+                if (produto.peso)
+                    element.valor = element.valor * 0.2;
                 r = true;
             }
         });
@@ -52,6 +52,8 @@ var ProdutoComponent = (function () {
             compra.produto_id = produto._id;
             compra.quantidade = 1;
             compra.valor = produto.preco * compra.quantidade;
+            if (produto.peso)
+                compra.valor = compra.valor * 0.2;
             this.AppService.Carrinho.compras.push(compra);
         }
         this.AppService.__setCarrinho(this.AppService.Carrinho).then(function (wait) {
@@ -61,7 +63,11 @@ var ProdutoComponent = (function () {
         var r = false;
         this.AppService.Carrinho.compras.forEach(function (element) {
             if (element.produto_id == produto._id) {
-                element.quantidade--;
+                if (element.quantidade > 0)
+                    element.quantidade--;
+                element.valor = produto.preco * element.quantidade;
+                if (produto.peso)
+                    element.valor = element.valor * 0.2;
                 r = true;
             }
         });
@@ -120,12 +126,38 @@ var ProdutoComponent = (function () {
     ProdutoComponent.prototype.Produto = function (produto) {
         this.produto = produto;
     };
+    ProdutoComponent.prototype.Categorias = function (tipo) {
+        var _this = this;
+        this.tipo = tipo;
+        this.categoria = null;
+        this.produtos = [];
+        this.CategoriaProvider.getByTipo(tipo, this.AppService.Supermercado._id)
+            .then(function (wait) {
+            _this.categorias = wait;
+            if (_this.categorias.length > 0)
+                _this.Categoria(_this.categorias[0]);
+        });
+    };
+    ProdutoComponent.prototype.Search = function () {
+        var _this = this;
+        this.searching = true;
+        if (this.categoria != null && this.search != "") {
+            this.ProdutoProvider.searchByCategoria(this.categoria._id, this.search)
+                .then(function (wait) {
+                _this.produtos = wait;
+                _this.searching = false;
+            });
+        }
+        else {
+            this.searching = false;
+        }
+    };
     ProdutoComponent.prototype.Categoria = function (categoria) {
         var _this = this;
         this.categoria = categoria;
         this.ProdutoProvider.getByCategoria(categoria._id)
             .then(function (data) {
-            _this.Image(data[0]);
+            // this.Image(data[0]);
             _this.produtos = data;
         });
     };

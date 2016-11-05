@@ -1,0 +1,111 @@
+<div class="section product-header">
+	<div class="container">
+		<div class="columns">
+			<div class="column">
+				<span class="title is-3">Indentifique-se</span>
+				<span class="title is-3 has-text-muted">&nbsp;|&nbsp;</span>
+				<span class="title is-4 has-text-muted">Category</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container profile">
+
+	<div [hidden]="!messages['warning']" class="notification is-warning">
+		<button (click)="Reset('warning')" class="delete"></button> 
+		{{ messages["warning"] }}
+	</div>
+
+	<div [hidden]="!messages['error']" class="notification is-danger">
+		<button (click)="Reset('error')" class="delete"></button> 
+		{{ messages["error"] }}
+	</div>
+
+	<div [hidden]="!messages['success']" class="notification is-success">
+		<button (click)="Reset('success')" class="delete"></button> 
+		{{ messages["success"] }}
+	</div>
+
+	<div class="card is-block">
+
+
+
+		<div class="card-content">
+			<div class="columns">
+				<div class="column padding-20">
+
+					<div [hidden]="!registered">
+						<p class="title is-4">Seja bem-vindo</p>
+						
+					</div>
+
+					<form [hidden]="registered" [formGroup]="form" (submit)="Submit()">
+
+						<p class="title is-4">Informe seus dados</p>
+
+						<div class="columns">
+							<div class="column">
+								<label class="label">E-mail</label>
+								<p class="control">
+									<input formControlName="email" class="input is-medium" type="text" placeholder="">
+									<span class="help is-danger">{{ messages["email"] }}</span>
+								</p>
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column">
+								<label class="label">Senha</label>
+								<p class="control">
+									<input formControlName="senha" class="input is-medium" type="password" placeholder="">
+									<span class="help is-danger">{{ messages["senha"] }}</span>
+								</p>
+							</div>
+						</div>
+						
+
+						<div class="columns">
+							<div class="column">
+								<p class="control">
+									<label class="checkbox">
+										<input type="checkbox">
+										Manter conectado
+									</label>
+								</p>
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column">
+								<p class="control text-center">
+									<button type="submit" [disabled]="!form.valid" class="button is-primary is-block">Entrar</button>
+								</p>
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column">
+								<a>Esqueci minha senha?</a>
+							</div>
+							<div class="column text-center">
+								<a>Esqueci meu e-mail?</a>
+							</div>
+							<div routerLink="/registrar" class="column text-right">
+								<a>Não sou cadastrado?</a>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="column padding-20">
+					<ul>
+					</ul>
+				</div>
+
+			</div>
+			<hr/>
+
+
+		</div>
+	</div>
+
+
+</div>

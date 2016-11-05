@@ -3,6 +3,8 @@ import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/observable'
 import 'rxjs/add/operator/map';
 
+import { HttpProvider } from './http'
+
 import { Supermercado } from '../models/supermercado'
 
 /*
@@ -17,7 +19,10 @@ export class SupermercadoProvider {
   supermercados: any;
   supermercado: any;
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    private HttpProvider: HttpProvider
+  ) {
     this.supermercados = null;
     this.supermercado = null;
   }
@@ -26,7 +31,7 @@ export class SupermercadoProvider {
 
     return new Promise(resolve => {
 
-      return this.http.get("http://192.168.25.8:8080/api/supermercado")
+      return this.HttpProvider.get("http://192.168.25.9:8080/api/supermercado")
         .map((res) => res.json() as Array<Supermercado>)
         .subscribe(data => {
           resolve(data);
@@ -42,7 +47,7 @@ export class SupermercadoProvider {
 
     return new Promise(resolve => {
 
-      this.http.get(`http://192.168.25.8:8080/api/supermercado/${id}`)
+      this.HttpProvider.get(`http://192.168.25.9:8080/api/supermercado/${id}`)
         .map((res) => res.json() as Supermercado)
         .subscribe(data => {
           resolve(data);
@@ -54,10 +59,7 @@ export class SupermercadoProvider {
 
   post(supermercado) {
 
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    this.http.post("http://192.168.25.8:8080/api/supermercado", JSON.stringify(supermercado), { headers: headers })
+    this.HttpProvider.post("http://192.168.25.9:8080/api/supermercado", supermercado)
       .map((res) => res.json())
       .subscribe(data => {
         console.log(data);

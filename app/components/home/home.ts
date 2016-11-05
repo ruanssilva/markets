@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
 
-        if (this.AppService.Cep == null)
-            this.Router.navigateByUrl("/cep");
-        else
-            this.Router.navigateByUrl("/supermercado");
+        // if (this.AppService.Cep == null)
+        //     this.Router.navigateByUrl("/cep");
+        // else
+        //     this.Router.navigateByUrl("/supermercado");
     }
 }

@@ -44,6 +44,16 @@ var DisponibilidadeComponent = (function () {
             });
         return result;
     };
+    DisponibilidadeComponent.prototype.Dia = function (dia) {
+        var _this = this;
+        this.AppService.Disponibilidade = null;
+        this.dia = dia;
+        this.disponibilidades = [];
+        this.AppService.Disponibilidades.forEach(function (disponibilidade) {
+            if (disponibilidade.dia == dia)
+                _this.disponibilidades.push(disponibilidade);
+        });
+    };
     DisponibilidadeComponent.prototype.setDia = function (dia) {
         var _this = this;
         this.AppService.Disponibilidade = null;

@@ -19,12 +19,15 @@ import { AppService } from '../../app.service'
 
 export class ProdutoComponent implements OnInit {
 
+    searching: boolean;
+    tipo: string;
     categoria: Categoria;
     produtos: Array<Produto> = [];
     categorias: Array<Categoria> = [];
     quantidade: number;
     pesquisa: boolean;
     produto: Produto;
+    search: string;
 
     constructor(
         private ProdutoProvider: ProdutoProvider,
@@ -40,18 +43,16 @@ export class ProdutoComponent implements OnInit {
 
         this.AppService.__getSupermercado()
             .then(wait => {
-                this.CategoriaProvider.getBySupermercado(wait._id)
-                    .then(wait2 => {
-                        this.categorias = wait2;
-                    });
+                this.categorias = [];
+                // this.CategoriaProvider.getBySupermercado(wait._id)
+                //     .then(wait2 => {
+                //         this.categorias = wait2;
+                //     });
 
             });
 
     }
 
-    Pesquisa(): void {
-        this.pesquisa = true;
-    }
 
     Adicionar(produto: Produto): void {
         let r = false;
@@ -59,6 +60,8 @@ export class ProdutoComponent implements OnInit {
             if (element.produto_id == produto._id) {
                 element.quantidade++;
                 element.valor = produto.preco * element.quantidade;
+                if (produto.peso)
+                    element.valor = element.valor * 0.2;
                 r = true;
             }
         });
@@ -67,6 +70,8 @@ export class ProdutoComponent implements OnInit {
             compra.produto_id = produto._id;
             compra.quantidade = 1;
             compra.valor = produto.preco * compra.quantidade;
+            if (produto.peso)
+                compra.valor = compra.valor * 0.2;
             this.AppService.Carrinho.compras.push(compra);
         }
         this.AppService.__setCarrinho(this.AppService.Carrinho).then(wait => {
@@ -78,10 +83,16 @@ export class ProdutoComponent implements OnInit {
         let r = false;
         this.AppService.Carrinho.compras.forEach(element => {
             if (element.produto_id == produto._id) {
-                element.quantidade--;
+                if (element.quantidade > 0)
+                    element.quantidade--;
+                element.valor = produto.preco * element.quantidade;
+                if (produto.peso)
+                    element.valor = element.valor * 0.2;
                 r = true;
             }
         });
+
+
         this.AppService.__setCarrinho(this.AppService.Carrinho).then(wait => {
 
         });
@@ -105,24 +116,24 @@ export class ProdutoComponent implements OnInit {
         return r;
     }
 
-    Image(produto : Produto ) : void {
+    Image(produto: Produto): void {
 
         // produto.thumbnail = "http://www.unilestemg.br//arq/video/depoimento/2016/02-vanessa-lopes-e-lurima-uane/02-vanessa-lopes-e-lurima-uane.jpg";
 
         this.CognitiveProvider.get(produto.descricao)
-        .then(wait => {
+            .then(wait => {
 
-            console.log(wait);
-            console.log(wait);
-            console.log(wait);
-            console.log(wait);
-            console.log(wait);
-            console.log(wait);
-            console.log(wait);
-            console.log(wait);
+                console.log(wait);
+                console.log(wait);
+                console.log(wait);
+                console.log(wait);
+                console.log(wait);
+                console.log(wait);
+                console.log(wait);
+                console.log(wait);
 
-            produto.thumbnail = wait.value[0].thumbnailUrl;
-        });        
+                produto.thumbnail = wait.value[0].thumbnailUrl;
+            });
     }
 
 
@@ -151,13 +162,40 @@ export class ProdutoComponent implements OnInit {
         this.produto = produto;
     }
 
+    Categorias(tipo: string): void {
+        this.tipo = tipo;
+        this.categoria = null;
+        this.produtos = [];
+        this.CategoriaProvider.getByTipo(tipo, this.AppService.Supermercado._id)
+            .then(wait => {
+                this.categorias = wait;
+                if (this.categorias.length > 0)
+                    this.Categoria(this.categorias[0]);
+            });
+    }
+
+    Search(): void {
+        this.searching = true;
+        if (this.categoria != null && this.search != "") {
+            this.ProdutoProvider.searchByCategoria(this.categoria._id, this.search)
+                .then(wait => {
+                    this.produtos = wait;
+                    this.searching = false;
+                });
+        }
+        else {
+            this.searching = false;
+        }
+
+    }
+
     Categoria(categoria: Categoria): void {
 
         this.categoria = categoria;
 
         this.ProdutoProvider.getByCategoria(categoria._id)
             .then(data => {
-                this.Image(data[0]);
+                // this.Image(data[0]);
                 this.produtos = data;
             });
 

@@ -20,7 +20,7 @@ var ReservaProvider = (function () {
     ReservaProvider.prototype.get = function () {
         var _this = this;
         return new Promise(function (resolve) {
-            return _this.http.get("http://192.168.25.8:8080/api/reserva")
+            return _this.http.get("http://192.168.25.9:8080/api/reserva")
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -30,7 +30,7 @@ var ReservaProvider = (function () {
     ReservaProvider.prototype.getById = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/reserva/" + id)
+            _this.http.get("http://192.168.25.9:8080/api/reserva/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -42,7 +42,7 @@ var ReservaProvider = (function () {
         return new Promise(function (resolve) {
             var headers = new http_1.Headers();
             headers.append('Content-Type', 'application/json');
-            _this.http.post("http://192.168.25.8:8080/api/reserva", JSON.stringify(reserva), { headers: headers })
+            _this.http.post("http://192.168.25.9:8080/api/reserva", JSON.stringify(reserva), { headers: headers })
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);

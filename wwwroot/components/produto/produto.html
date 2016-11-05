@@ -1,153 +1,115 @@
-<section class="hero is-primary">
-	<div class="hero-body">
-		<div class="container">
-			<h1 class="title">
-				Produtos
-			</h1>
-			<h2 class="subtitle">
-				Prateleira do supermercado
-			</h2>
-		</div>
-	</div>
-	<div class="hero-foot">
-		<div class="container">
-			<nav class="tabs is-boxed">
-				<ul>
-					<li *ngFor="let c of categorias" [ngClass]="{'is-active': categoria == c }" (click)="Categoria(c)">
-						<a>{{ c.nome }}</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-</section>
-
-<!--<nav class="nav has-shadow">
+<div class="section product-header">
 	<div class="container">
-		<div class="nav-left">
-			<a *ngFor="let c of categorias" [ngClass]="{'is-active': categoria == c }" (click)="Categoria(c)" class="nav-item is-tab">{{ c.nome }}</a>
+		<div class="columns">
+			<div class="column">
+				<span class="title is-3">Faça suas compras</span>
+				<span class="title is-3 has-text-muted">&nbsp;|&nbsp;</span>
+				<span class="title is-4 has-text-muted">Category</span>
+			</div>
 		</div>
 	</div>
-</nav>-->
-<div class="container">
-
 </div>
 
-<div class="container">
+<div class="container profile">
 
-	<nav class="nav has-shadow level">
-
-		<div class="level-item has-text-centered">
-			<p class="heading"></p>
-			<p class="title">58 itens</p>
+	<div class="section profile-heading">
+		<div class="columns">
+			<div class="column is-2">
+				<div class="image is-128x128 avatar">
+					<img src="https://placehold.it/256x256">
+				</div>
+			</div>
+			<div class="column is-4 name">
+				<p>
+					<span class="title is-bold">{{ AppService.Supermercado?.nome }}</span>
+					<span class="button is-primary is-outlined follow">Follow</span>
+				</p>
+				<p class="tagline">{{ AppService.Supermercado?.descricao }}</p>
+			</div>
+			<div class="column is-2 followers has-text-centered">
+				<p class="stat-val">{{ Itens() }} itens</p>
+				<p class="stat-val"><button class="button is-large"><i class="fa fa-eye"></i><i class="fa fa-shopping-cart"></i> &nbsp;</button></p>
+			</div>
+			<div class="column is-2 following has-text-centered">
+				<p class="stat-val">R$ {{ Valor().toFixed(2) }}</p>
+				<p class="stat-val"><button class="button is-large"><i class="fa fa-check"></i><i class="fa fa-shopping-cart"></i></button></p>
+			</div>
+			<div class="column is-2 likes has-text-centered">
+				<p class="stat-val">29</p>
+				<p class="stat-key">curtidas</p>
+			</div>
 		</div>
-		<div class="level-item has-text-centered">
-			<p class="heading"></p>
-			<p class="title">R$ 258.87</p>
+	</div>
+	<div class="profile-options">
+		<div class="tabs is-fullwidth">
+			<ul>
+				<li [ngClass]="{'is-active': tipo == 'alimentos', 'link' : true }" (click)="Categorias('alimentos')"><a><span class="icon"><i class="fa fa-list"></i></span><span>Alimentos</span></a></li>
+				<li [ngClass]="{'is-active': tipo == 'bebidas', 'link' : true }" (click)="Categorias('bebidas')"><a><span class="icon"><i class="fa fa-list"></i></span><span>Bebidas</span></a></li>
+				<li [ngClass]="{'is-active': tipo == 'frios', 'link' : true }" (click)="Categorias('frios')"><a><span class="icon"><i class="fa fa-list"></i></span><span>Frios</span></a></li>
+				<li [ngClass]="{'is-active': tipo == 'higiene', 'link' : true }" (click)="Categorias('higiene')"><a><span class="icon"><i class="fa fa-heart"></i></span> <span>Higiene</span></a></li>
+				<li [ngClass]="{'is-active': tipo == 'limpeza', 'link' : true }" (click)="Categorias('limpeza')"><a><span class="icon"><i class="fa fa-th"></i></span> <span>Limpeza</span></a></li>
+			</ul>
 		</div>
-		<div class="level-item has-text-centered">
-			<p class="heading"></p>
-			<p class="title">456K</p>
-		</div>
-		<div class="level-item has-text-centered">
-			<p class="heading"></p>
-			<p class="title">789</p>
-		</div>
+	</div>
 
-	</nav>
+	<div class="box">
+		<!-- Main container -->
+		<nav class="level">
+			<div class="level-left">
+				<p *ngFor="let c of categorias" [ngClass]="{ 'level-item' : true }" (click)="Categoria(c)">
 
-	<div class="columns is-multiline container is-fluid">
-		<div class="card item column is-3" *ngFor="let p of produtos">
-			<a (click)="Produto(p)">
+					<a [hidden]="categoria == c">{{ c.nome }}</a>
+					<strong [hidden]="!(categoria == c)">{{ c.nome }}</strong>
+				</p>
+			</div>
 
+			<div class="level-right">
+				<div [hidden]="categoria == null" class="level-item">
+					<p class="subtitle is-5">
+						Exibindo <strong>{{ produtos.length }}</strong> produtos
+					</p>
+				</div>
+				<div class="level-item">
+					<p class="control has-addons">
+						<input [(ngModel)]="search" class="input" type="text" placeholder="Buscar por produto">
+						<button [ngClass]="{ 'button' : true, 'is-loading': searching }" (click)="Search()">
+                Buscar
+              </button>
+					</p>
+				</div>
+
+			</div>
+
+			<!-- Right side -->
+
+		</nav>
+	</div>
+
+	<div class="spacer"></div>
+
+	<div class="columns is-multiline">
+		<div class="column is-3" *ngFor="let p of produtos">
+			<div class="card">
 				<div class="card-image">
 					<figure class="image is-4by3">
-						<img src="https://api.adorable.io/avatars/150/supermercado{{p.nome}}" alt="">
+						<img src="http://placehold.it/300x225" alt="">
 					</figure>
 				</div>
-			</a>
-
-			<div class="card-content">
-				<div class="media">
-					<div class="media-content right">
-						<p class="title is-4">{{ p.nome }}</p>
-						<p class="subtitle is-5"> {{ p.descricao }}</p>
+				<div class="card-content" style="height:160px;">
+					<div class="content">
+						<h2>R$ {{ p.preco }} <span class="tag is-dark">por {{ p.unidade ? "unidade" : "" }} {{ p.peso ? "kg" : "" }}</span> </h2>
+						<strong class="timestamp">{{ p.descricao }}</strong>
 					</div>
 				</div>
-				<hr/>
-
-				<div class="content">
-
-					<h2 class="center"> R$ {{ p.preco }} por {{ p.unidade ? "unidade" : "" }} {{ p.peso ? "kg" : "" }}</h2>
-					<hr/>
-					<div class="container">
-						<h3 class="center">
-
-
-						</h3>
-						<div class="columns is-multiline">
-							<div class="column center">
-								<button (click)="Adicionar(p)" class="button is-primary"><i class="fa fa-plus"></i><i class="fa fa-shopping-cart"></i></button>
-							</div>
-							<div class="column center">
-								{{ Quantidade(p) > 0 ? (Quantidade(p) > 1 ? Quantidade(p) + " itens" : Quantidade(p) + " item") : "Nenhum no carrinho" }}
-								<br/>
-
-								<small><b>{{ Quantidade(p) > 0 ? "R$ " + (Quantidade(p) * p.preco).toFixed(2) : "" }}</b></small>
-							</div>
-							<!--<div class="column">
-								<p class="control has-addons" style="padding:0 5px 0 5px;">
-									<input (change)="Manual(p, $event)" class="input" type="text" placeholder="Quantidade" value="{{ compra[p._id] }}">
-									<a class="button is-info"> <i class="fa fa-refresh"></i> </a>
-								</p>
-							</div>-->
-							<div class="column center">
-								<div [hidden]="!(Quantidade(p) > 0)">
-									<button (click)="Remover(p)" class="button is-warning"><i class="fa fa-minus"></i><i class="fa fa-shopping-cart"></i></button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div>
+				<footer class="card-footer">
+					<a class="card-footer-item" (click)="Adicionar(p)"><span class="icon is-small"><i class="fa fa-plus"></i></span></a>
+					<a class="card-footer-item">
+            {{ Quantidade(p) > 0 ? ( p.unidade ? (Quantidade(p) > 1 ? Quantidade(p) + ' item' : Quantidade(p) + ' itens') : (Quantidade(p) * 200).toFixed(0) + 'g' ) : "Nenhum no carrinho" }}
+            {{ Quantidade(p) > 0 ? ' por R$ ' + (p.unidade ? (Quantidade(p) * p.preco).toFixed(2) : ((Quantidade(p) * 0.2) * p.preco).toFixed(2)) : "" }}
+          </a>
+					<a [hidden]="Quantidade(p) == 0" class="card-footer-item" (click)="Remover(p)"><span class="icon is-small"><i class="fa fa-minus"></i></span></a>
+				</footer>
 			</div>
 		</div>
-
-		<div [ngClass]="{ 'modal': true, 'is-active': produto != null }" class="modal">
-			<div class="modal-background"></div>
-			<div class="modal-content">
-				<div class="box">
-					<article class="media">
-						<div class="media-left">
-							<figure class="image is-64x64">
-								<img src="http://placehold.it/128x128" alt="Image">
-							</figure>
-						</div>
-						<div class="media-content">
-							<div class="content">
-								<p>
-									<strong>{{ produto?.nome }}</strong> <small> {{ Quantidade(produto) }} x R$ {{ produto?.preco }} </small> <small>R$ {{ (produto?.preco * Quantidade(produto)) }}</small>
-									<br> {{ produto?.descricao }}
-								</p>
-							</div>
-							<nav class="level">
-								<div class="level-left">
-									<a class="level-item" (click)="Adicionar(produto)">
-										<span class="icon is-small"><i class="fa fa-plus"></i></span>
-									</a>
-									<a class="level-item" (click)="Remover(produto)">
-										<span class="icon is-small"><i class="fa fa-minus"></i></span>
-									</a>
-								</div>
-							</nav>
-						</div>
-					</article>
-				</div>
-			</div>
-			<button (click)="Produto(null)" class="modal-close"></button>
-		</div>
-
-
-
 	</div>
 </div>

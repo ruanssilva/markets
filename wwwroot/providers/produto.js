@@ -11,14 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var http_2 = require('./http');
 var ProdutoProvider = (function () {
-    function ProdutoProvider(http) {
+    function ProdutoProvider(http, HttpProvider) {
         this.http = http;
+        this.HttpProvider = HttpProvider;
     }
     ProdutoProvider.prototype.get = function () {
         var _this = this;
         return new Promise(function (resolve) {
-            return _this.http.get("http://192.168.25.8:8080/api/produto")
+            return _this.HttpProvider.get("http://192.168.25.9:8080/api/produto")
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -28,7 +30,7 @@ var ProdutoProvider = (function () {
     ProdutoProvider.prototype.getById = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/produto/" + id)
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/produto/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -38,7 +40,17 @@ var ProdutoProvider = (function () {
     ProdutoProvider.prototype.getByCategoria = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/produto/categoria/" + id)
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/produto/categoria/" + id)
+                .map(function (res) { return res.json(); })
+                .subscribe(function (data) {
+                resolve(data);
+            });
+        });
+    };
+    ProdutoProvider.prototype.searchByCategoria = function (categoria, search) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/produto/categoria/" + categoria + "/search/" + search)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -48,7 +60,7 @@ var ProdutoProvider = (function () {
     ProdutoProvider.prototype.getBySupermercado = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/produto/supermercado/" + id)
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/produto/supermercado/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -58,21 +70,16 @@ var ProdutoProvider = (function () {
     ProdutoProvider.prototype.post = function (reserva) {
         var _this = this;
         return new Promise(function (resolve) {
-            var headers = new http_1.Headers();
-            headers.append('Content-Type', 'application/json');
-            _this.http.post("http://192.168.25.8:8080/api/produto", JSON.stringify(reserva), { headers: headers })
+            _this.HttpProvider.post("http://192.168.25.9:8080/api/produto", reserva)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
-                console.log("olá!!");
-                console.log("olá!!");
-                console.log(data);
                 resolve(data);
             });
         });
     };
     ProdutoProvider = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, http_2.HttpProvider])
     ], ProdutoProvider);
     return ProdutoProvider;
 }());

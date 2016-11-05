@@ -1,0 +1,166 @@
+<div class="section product-header">
+	<div class="container">
+		<div class="columns">
+			<div class="column">
+				<span class="title is-3">Indentifique-se</span>
+				<span class="title is-3 has-text-muted">&nbsp;|&nbsp;</span>
+				<span class="title is-4 has-text-muted">Category</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container profile">
+
+	<div [hidden]="!messages['warning']" class="notification is-warning">
+		<button (click)="Reset('warning')" class="delete"></button> 
+		{{ messages["warning"] }}
+	</div>
+
+	<div [hidden]="!messages['error']" class="notification is-danger">
+		<button (click)="Reset('error')" class="delete"></button> 
+		{{ messages["error"] }}
+	</div>
+
+	<div [hidden]="!messages['success']" class="notification is-success">
+		<button (click)="Reset('success')" class="delete"></button> 
+		{{ messages["success"] }}
+	</div>
+
+	<div class="card is-block">
+
+
+
+		<div class="card-content">
+			<div class="columns">
+				<div class="column padding-20">
+					<form [formGroup]="form" (submit)="Submit()">
+
+						<p class="title is-4">Informe seus dados</p>
+
+						<div class="columns">
+							<div class="column">
+								<label class="label">E-mail</label>
+								<p class="control">
+									<input formControlName="email" (change)="onemailchange($event)" class="input is-medium" type="text" placeholder="">
+									<span class="help is-danger">{{ messages["email"] }}</span>
+								</p>
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column">
+								<label class="label">Senha</label>
+								<p class="control">
+									<input formControlName="senha" class="input is-medium" type="password" placeholder="">
+									<span class="help is-danger">{{ messages["senha"] }}</span>
+								</p>
+							</div>
+							<div class="column">
+								<label class="label">Confirme sua senha</label>
+								<p class="control">
+									<input formControlName="confirma" (change)="onconfirmachange($event)" class="input is-medium" type="password" placeholder="">
+									<span class="help is-danger">{{ messages["confirma"] }}</span>
+								</p>
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column">
+								<label class="label">Nome</label>
+								<p class="control">
+									<input formControlName="nome" class="input is-medium" type="text" placeholder="">
+									<span class="help is-danger">{{ messages["nome"] }}</span>
+								</p>
+							</div>
+							<div class="column">
+								<label class="label">Sexo</label>
+								<p class="control">
+									<label class="radio">
+    									<input formControlName="sexo" value="f" type="radio">
+    									Feminino
+									</label>
+									<label class="radio">
+    									<input formControlName="sexo" value="m" type="radio">
+    									Masculino
+  									</label>
+								</p>
+							</div>
+						</div>
+						<div class="columns">
+
+							<div class="column">
+								<label class="label">CPF.</label>
+								<p class="control">
+									<input formControlName="cpf" (change)="oncpfkeypress($event)" (keypress)="oncpfkeypress($event)" maxlength="14" class="input is-medium"
+										type="text" placeholder="">
+									<span class="help is-danger">{{ messages["cpf"] }}</span>
+								</p>
+							</div>
+							<div class="column">
+								<label class="label">Data de nascimento</label>
+								<p class="control">
+									<input formControlName="nascimento" (change)="onnascimentokeypress($event)" maxlength="10" (keypress)="onnascimentokeypress($event)"
+										class="input is-medium" type="text" placeholder="">
+									<span class="help is-danger">{{ messages["nascimento"] }}</span>
+								</p>
+							</div>
+
+						</div>
+						<div class="columns">
+
+							<div class="column">
+								<label class="label">Telefone fixo</label>
+								<p class="control">
+									<input formControlName="telefone" class="input is-medium" type="text" placeholder="">
+									<span class="help is-danger">{{ messages["telefone"] }}</span>
+								</p>
+							</div>
+							<div class="column">
+								<label class="label">Telefone celular</label>
+								<p class="control">
+									<input formControlName="celular" class="input is-medium" type="text" placeholder="">
+									<span class="help is-danger">{{ messages["celular"] }}</span>
+								</p>
+							</div>
+
+						</div>
+
+						<div class="columns">
+							<div class="column">
+								<p class="control">
+									<label class="checkbox">
+										<input type="checkbox">
+										Desejo receber ofertas do Webmart.com por e-mail
+									</label>
+								</p>
+								<p class="control">
+									<label class="checkbox">
+										<input type="checkbox">
+										Desejo receber ofertas do Webmart.com por sms/text no celular
+									</label>
+								</p>
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column">
+								<p class="control text-center">
+									<button type="submit" [disabled]="!form.valid" class="button is-primary is-block">Cadastrar</button>
+								</p>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="column padding-20">
+					<ul>
+					</ul>
+				</div>
+
+			</div>
+			<hr/>
+
+
+		</div>
+	</div>
+
+
+</div>

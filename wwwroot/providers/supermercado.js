@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var http_2 = require('./http');
 /*
   Generated class for the Person provider.
 
@@ -18,15 +19,16 @@ require('rxjs/add/operator/map');
   for more info on providers and Angular 2 DI.
 */
 var SupermercadoProvider = (function () {
-    function SupermercadoProvider(http) {
+    function SupermercadoProvider(http, HttpProvider) {
         this.http = http;
+        this.HttpProvider = HttpProvider;
         this.supermercados = null;
         this.supermercado = null;
     }
     SupermercadoProvider.prototype.get = function () {
         var _this = this;
         return new Promise(function (resolve) {
-            return _this.http.get("http://192.168.25.8:8080/api/supermercado")
+            return _this.HttpProvider.get("http://192.168.25.9:8080/api/supermercado")
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -36,7 +38,7 @@ var SupermercadoProvider = (function () {
     SupermercadoProvider.prototype.getById = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/supermercado/" + id)
+            _this.HttpProvider.get("http://192.168.25.9:8080/api/supermercado/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -44,9 +46,7 @@ var SupermercadoProvider = (function () {
         });
     };
     SupermercadoProvider.prototype.post = function (supermercado) {
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        this.http.post("http://192.168.25.8:8080/api/supermercado", JSON.stringify(supermercado), { headers: headers })
+        this.HttpProvider.post("http://192.168.25.9:8080/api/supermercado", supermercado)
             .map(function (res) { return res.json(); })
             .subscribe(function (data) {
             console.log(data);
@@ -54,7 +54,7 @@ var SupermercadoProvider = (function () {
     };
     SupermercadoProvider = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, http_2.HttpProvider])
     ], SupermercadoProvider);
     return SupermercadoProvider;
 }());

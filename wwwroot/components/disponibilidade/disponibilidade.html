@@ -1,58 +1,104 @@
-<section class="hero is-primary">
-	<div class="hero-body">
-		<div class="container">
-			<h1 class="title">
-				Forma de entrega
-			</h1>
-			<h2 class="subtitle">
-				Informe se vai fazer retirada no local ou AppService.Agendará a entrega
-			</h2>
-		</div>
-	</div>
-</section>
-
-<div class="container">
-	<div class="tabs is-large is-centered">
-		<ul>
-			<li (click)="Agendar(false)" [ngClass]="{'is-active': !AppService.Agendar }"><a>Retirada no local</a></li>
-			<li (click)="Agendar(true)" [ngClass]="{'is-active': AppService.Agendar }"><a>Agendar entrega</a></li>
-		</ul>
-	</div>
-	<div [hidden]="AppService.Agendar">
-		<h1>Horário de funcionamento</h1>
-
-
-	</div>
-	<div [hidden]="!AppService.Agendar">
-		<div class="tabs is-medium is-centered">
-			<ul>
-				<li [ngClass]="{'is-active': dia == 1 }" (click)="setDia(1)"><a>Domingo <i [ngClass]="{'fa': true, 'fa-remove': !getDia(1), 'fa-check': getDia(1) }"></i></a></li>
-				<li [ngClass]="{'is-active': dia == 2 }" (click)="setDia(2)"><a>Segunda <i [ngClass]="{'fa': true, 'fa-remove': !getDia(2), 'fa-check': getDia(2) }"></i></a></li>
-				<li [ngClass]="{'is-active': dia == 3 }" (click)="setDia(3)"><a>Terça <i [ngClass]="{'fa': true, 'fa-remove': !getDia(3), 'fa-check': getDia(3) }"></i></a></li>
-				<li [ngClass]="{'is-active': dia == 4 }" (click)="setDia(4)"><a>Quarta <i [ngClass]="{'fa': true, 'fa-remove': !getDia(4), 'fa-check': getDia(4) }"></i></a></li>
-				<li [ngClass]="{'is-active': dia == 5 }" (click)="setDia(5)"><a>Quinta <i [ngClass]="{'fa': true, 'fa-remove': !getDia(5), 'fa-check': getDia(5) }"></i></a></li>
-				<li [ngClass]="{'is-active': dia == 6 }" (click)="setDia(6)"><a>Sexta <i [ngClass]="{'fa': true, 'fa-remove': !getDia(6), 'fa-check': getDia(6) }"></i></a></li>
-				<li [ngClass]="{'is-active': dia == 7 }" (click)="setDia(7)"><a>Sábado <i [ngClass]="{'fa': true, 'fa-remove': !getDia(7), 'fa-check': getDia(7) }"></i></a></li>
-			</ul>
-		</div>
-
-		<div [hidden]="!(disponibilidades?.length > 0 && dia)">
-			<div class="tabs is-medium is-centered">
-				<ul>
-					<li [ngClass]="{'is-active': AppService.Disponibilidade?.hora == disponibilidade.hora }" (click)="Disponibilidade(disponibilidade)"
-						*ngFor="let disponibilidade of disponibilidades"><a>{{ disponibilidade.hora }}</a></li>
-				</ul>
+<div class="section product-header">
+	<div class="container">
+		<div class="columns">
+			<div class="column">
+				<span class="title is-3">Product Name</span>
+				<span class="title is-3 has-text-muted">&nbsp;|&nbsp;</span>
+				<span class="title is-4 has-text-muted">Category</span>
 			</div>
 		</div>
+	</div>
+</div>
+<div class="container profile">
 
-
-		<div>
-
-
+	<div class="section profile-heading">
+		<div class="columns">
+			<div class="column is-2">
+				<div class="image is-128x128 avatar">
+					<img src="https://placehold.it/256x256">
+				</div>
+			</div>
+			<div class="column is-4 name">
+				<p>
+					<span class="title is-bold">{{ AppService.Supermercado?.nome }}</span>
+					<span class="button is-primary is-outlined follow">Follow</span>
+				</p>
+				<p class="tagline">{{ AppService.Supermercado?.descricao }}</p>
+			</div>
+			<div class="column is-2 followers has-text-centered">
+				<p class="stat-val">300</p>
+				<p class="stat-key">entregas</p>
+			</div>
+			<div class="column is-2 following has-text-centered">
+				<p class="stat-val">199</p>
+				<p class="stat-key">aprovações</p>
+			</div>
+			<div class="column is-2 likes has-text-centered">
+				<p class="stat-val">29</p>
+				<p class="stat-key">curtidas</p>
+			</div>
+		</div>
+	</div>
+	<div class="profile-options">
+		<div class="tabs is-fullwidth">
+			<ul>
+				<li [ngClass]="{'is-active': !AppService.Agendar, 'link' : true }" (click)="Agendar(false)"><a><span class="icon"><i class="fa fa-list"></i></span><span>Retirada no local</span></a></li>
+				<li [ngClass]="{'is-active': AppService.Agendar, 'link' : true }" (click)="Agendar(true)"><a><span class="icon"><i class="fa fa-list"></i></span><span>Agendar entrega</span></a></li>
+			</ul>
 		</div>
 	</div>
 
-	<br/>
+	<div class="box">
+		<!-- Main container -->
+		<nav class="level daysofweek">
+			<!-- Left side -->
+
+			<div [hidden]="!(AppService.Agendar && dia)" class="level-right">
+				<p [ngClass]="{ 'level-item' : true }" *ngFor="let disponibilidade of disponibilidades" (click)="Disponibilidade(disponibilidade)">
+					<a [hidden]="AppService.Disponibilidade?.hora == disponibilidade.hora">{{ disponibilidade.hora }}</a>
+					<strong [hidden]="!(AppService.Disponibilidade?.hora == disponibilidade.hora)">{{ disponibilidade.hora }}</strong>
+				</p>
+				<strong [hidden]="disponibilidades?.length > 0">
+					Não há horários disponíveis para o dia
+				</strong>
+			</div>
+
+			<div [hidden]="!AppService.Agendar" class="level-left">
+				<p [ngClass]="{ 'level-item' : true }" (click)="Dia(1)">
+					<a [hidden]="dia == 1">Domingo</a>
+					<strong [hidden]="dia != 1">Domingo</strong>
+				</p>
+				<p [ngClass]="{ 'level-item' : true }" (click)="Dia(2)">
+					<a [hidden]="dia != 2">Segunda</a>
+					<strong [hidden]="dia != 2">Segunda</strong>
+				</p>
+				<p [ngClass]="{ 'level-item' : true }" (click)="Dia(3)">
+					<a [hidden]="dia == 3">Terça</a>
+					<strong [hidden]="dia != 3">Terça</strong>
+				</p>
+				<p [ngClass]="{ 'level-item' : true }" (click)="Dia(4)">
+					<a [hidden]="dia == 4">Quarta</a>
+					<strong [hidden]="dia != 4">Quarta</strong>
+				</p>
+				<p [ngClass]="{ 'level-item' : true }" (click)="Dia(5)">
+					<a [hidden]="dia == 5">Quinta</a>
+					<strong [hidden]="dia != 5">Quinta</strong>
+				</p>
+				<p [ngClass]="{ 'level-item' : true }" (click)="Dia(6)">
+					<a [hidden]="dia == 6">Sexta</a>
+					<strong [hidden]="dia != 6">Sexta</strong>
+				</p>
+				<p [ngClass]="{ 'level-item' : true }" (click)="Dia(7)">
+					<a [hidden]="dia == 7">Sábado</a>
+					<strong [hidden]="dia != 7">Sábado</strong>
+				</p>
+			</div>
+
+
+		</nav>
+	</div>
+
+	<div class="spacer"></div>
 
 	<div [hidden]="AppService.Agendar && !AppService.Disponibilidade" class="center">
 		<a (click)="Compras()" class="button is-primary is-large">

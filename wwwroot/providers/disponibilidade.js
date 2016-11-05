@@ -18,7 +18,7 @@ var DisponibilidadeProvider = (function () {
     DisponibilidadeProvider.prototype.get = function () {
         var _this = this;
         return new Promise(function (resolve) {
-            return _this.http.get("http://192.168.25.8:8080/api/disponibilidade")
+            return _this.http.get("http://192.168.25.9:8080/api/disponibilidade")
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -28,7 +28,7 @@ var DisponibilidadeProvider = (function () {
     DisponibilidadeProvider.prototype.getById = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/disponibilidade/" + id)
+            _this.http.get("http://192.168.25.9:8080/api/disponibilidade/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -38,7 +38,7 @@ var DisponibilidadeProvider = (function () {
     DisponibilidadeProvider.prototype.getBySupermercado = function (id) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.http.get("http://192.168.25.8:8080/api/disponibilidade/supermercado/" + id)
+            _this.http.get("http://192.168.25.9:8080/api/disponibilidade/supermercado/" + id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);
@@ -50,7 +50,7 @@ var DisponibilidadeProvider = (function () {
         return new Promise(function (resolve) {
             var headers = new http_1.Headers();
             headers.append('Content-Type', 'application/json');
-            _this.http.post("http://192.168.25.8:8080/api/disponibilidade", JSON.stringify(disponibilidade), { headers: headers })
+            _this.http.post("http://192.168.25.9:8080/api/disponibilidade", JSON.stringify(disponibilidade), { headers: headers })
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
                 resolve(data);

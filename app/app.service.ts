@@ -6,12 +6,15 @@ import { Supermercado } from './models/supermercado'
 import { Categoria } from './models/categoria'
 import { Disponibilidade } from './models/disponibilidade'
 import { Carrinho } from './models/carrinho'
+import { Usuario } from './models/usuario'
 
 import { SupermercadoProvider } from './providers/supermercado'
 import { CategoriaProvider } from './providers/categoria'
 import { DisponibilidadeProvider } from './providers/disponibilidade'
 import { ProdutoProvider } from './providers/produto'
 import { CarrinhoProvider } from './providers/carrinho'
+import { UsuarioProvider } from './providers/usuario'
+import { LoginProvider } from './providers/login'
 
 
 @Injectable()
@@ -24,6 +27,8 @@ export class AppService implements OnInit {
     public Carrinho: Carrinho;
 
     public Disponibilidade: Disponibilidade;
+
+    public Usuario: Usuario;
 
     public Categorias: Array<Categoria>;
     public Disponibilidades: Array<Disponibilidade>;
@@ -38,6 +43,8 @@ export class AppService implements OnInit {
         private _categoriaProvider: CategoriaProvider,
         private _disponibilidadeProvider: DisponibilidadeProvider,
         private CarrinhoProvider: CarrinhoProvider,
+        private UsuarioProvider: UsuarioProvider,
+        private LoginProvider: LoginProvider,
         private _router: Router
     ) {
 
@@ -105,6 +112,53 @@ export class AppService implements OnInit {
 
     // comentario
 
+    __setUsuario(usuario: Usuario): Promise<any> {
+        return new Promise(resolve => {
+            if (usuario != null)
+                localStorage.setItem("#usuarioid#", usuario._id);
+            else
+                localStorage.removeItem("#usuarioid#");
+
+            //this.Usuario = usuario;
+            resolve();
+        })
+    }
+
+    __setToken(token: string): Promise<Usuario> {
+
+        return new Promise(resolve => {
+            if (token != null)
+                localStorage.setItem("#token#", token);
+            else
+                localStorage.removeItem("#token#");
+
+            this.__getUsuario()
+                .then(wait => {
+                    resolve(wait);
+                })
+        })
+    }
+
+    __getUsuario(): Promise<Usuario> {
+        return new Promise(resolve => {
+            let token = localStorage.getItem("#token#");
+
+            if (token != null) {
+                this.LoginProvider.get(token)
+                    .then(wait => {
+                        if (wait == null) {
+                            localStorage.removeItem("#token#");
+                            resolve(null);
+                        }
+                        this.Usuario = wait;
+                        resolve(wait);
+                    });
+            }
+            else
+                this.Usuario = null;
+        });
+    }
+
     __setCep(cep: string): Promise<any> {
         return new Promise(resolve => {
             localStorage.setItem("#cep#", cep);
@@ -160,6 +214,11 @@ export class AppService implements OnInit {
     __setCarrinho(carrinho: Carrinho): Promise<Carrinho> {
         return new Promise(resolve => {
 
+            if (this.Usuario != null)
+                carrinho.usuario_id = this.Usuario._id;
+            carrinho.supermercado_id = this.Supermercado._id;
+            carrinho.horario = new Date()
+
             if (this.Carrinho._id != null) {
 
                 let _id = localStorage.getItem("#carrinhoid#");
@@ -185,13 +244,13 @@ export class AppService implements OnInit {
     __getCarrinho(): Promise<Carrinho> {
         return new Promise(resolve => {
             let _id = localStorage.getItem("#carrinhoid#");
-            console.log(_id);
             if (_id != null) {
                 this.CarrinhoProvider.getById(_id).then(wait => {
                     if (wait == null) {
                         _id = null;
                         localStorage.setItem("#carrinhoid#", _id);
                     }
+                    console.log(wait);
                     resolve(wait);
                 });
 

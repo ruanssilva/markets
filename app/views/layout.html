@@ -1,4 +1,32 @@
-<nav class="nav">
+<nav class="nav has-shadow" id="top">
+	<div class="container">
+		<div class="nav-left">
+			<a class="nav-item" routerLink="/home">
+				<img src="../images/bulma.png" alt="Logotipo">
+			</a>
+		</div>
+		<span class="nav-toggle">
+        <span></span>
+		<span></span>
+		<span></span>
+		</span>
+		<div class="nav-right nav-menu">
+			<a routerLink="/supermercado" class="nav-item">
+          Supermercados
+        </a>
+			<a routerLink="/entrar" class="nav-item">
+          Team
+        </a>
+			<a class="nav-item">
+          Help
+        </a>
+		</div>
+
+		<my-login></my-login>
+	</div>
+</nav>
+
+<!--<nav class="nav">
 	<div class="nav-left">
 		<a class="nav-item is-brand">
 			<span class="icon">
@@ -54,7 +82,7 @@
 
 	</div>
 
-</nav>
+</nav>-->
 
 <div>
 	<router-outlet>

@@ -20,10 +20,10 @@ var HomeComponent = (function () {
         this.setSupermercado = new core_1.EventEmitter();
     }
     HomeComponent.prototype.ngOnInit = function () {
-        if (this.AppService.Cep == null)
-            this.Router.navigateByUrl("/cep");
-        else
-            this.Router.navigateByUrl("/supermercado");
+        // if (this.AppService.Cep == null)
+        //     this.Router.navigateByUrl("/cep");
+        // else
+        //     this.Router.navigateByUrl("/supermercado");
     };
     __decorate([
         core_1.Input(), 

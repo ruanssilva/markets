@@ -15,17 +15,21 @@ var supermercado_1 = require('./providers/supermercado');
 var categoria_1 = require('./providers/categoria');
 var disponibilidade_1 = require('./providers/disponibilidade');
 var carrinho_2 = require('./providers/carrinho');
+var usuario_1 = require('./providers/usuario');
+var login_1 = require('./providers/login');
 var AppService = (function () {
     /**
      *
      */
-    function AppService(_supermercadoProvider, _categoriaProvider, _disponibilidadeProvider, CarrinhoProvider, _router) {
+    function AppService(_supermercadoProvider, _categoriaProvider, _disponibilidadeProvider, CarrinhoProvider, UsuarioProvider, LoginProvider, _router) {
         // alert('constructor #AppService');
         var _this = this;
         this._supermercadoProvider = _supermercadoProvider;
         this._categoriaProvider = _categoriaProvider;
         this._disponibilidadeProvider = _disponibilidadeProvider;
         this.CarrinhoProvider = CarrinhoProvider;
+        this.UsuarioProvider = UsuarioProvider;
+        this.LoginProvider = LoginProvider;
         this._router = _router;
         this.Compra = [];
         this.Agendar = false;
@@ -76,6 +80,48 @@ var AppService = (function () {
         });
     };
     // comentario
+    AppService.prototype.__setUsuario = function (usuario) {
+        return new Promise(function (resolve) {
+            if (usuario != null)
+                localStorage.setItem("#usuarioid#", usuario._id);
+            else
+                localStorage.removeItem("#usuarioid#");
+            //this.Usuario = usuario;
+            resolve();
+        });
+    };
+    AppService.prototype.__setToken = function (token) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            if (token != null)
+                localStorage.setItem("#token#", token);
+            else
+                localStorage.removeItem("#token#");
+            _this.__getUsuario()
+                .then(function (wait) {
+                resolve(wait);
+            });
+        });
+    };
+    AppService.prototype.__getUsuario = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            var token = localStorage.getItem("#token#");
+            if (token != null) {
+                _this.LoginProvider.get(token)
+                    .then(function (wait) {
+                    if (wait == null) {
+                        localStorage.removeItem("#token#");
+                        resolve(null);
+                    }
+                    _this.Usuario = wait;
+                    resolve(wait);
+                });
+            }
+            else
+                _this.Usuario = null;
+        });
+    };
     AppService.prototype.__setCep = function (cep) {
         var _this = this;
         return new Promise(function (resolve) {
@@ -128,6 +174,10 @@ var AppService = (function () {
     AppService.prototype.__setCarrinho = function (carrinho) {
         var _this = this;
         return new Promise(function (resolve) {
+            if (_this.Usuario != null)
+                carrinho.usuario_id = _this.Usuario._id;
+            carrinho.supermercado_id = _this.Supermercado._id;
+            carrinho.horario = new Date();
             if (_this.Carrinho._id != null) {
                 var _id = localStorage.getItem("#carrinhoid#");
                 carrinho._id = _id;
@@ -149,13 +199,13 @@ var AppService = (function () {
         var _this = this;
         return new Promise(function (resolve) {
             var _id = localStorage.getItem("#carrinhoid#");
-            console.log(_id);
             if (_id != null) {
                 _this.CarrinhoProvider.getById(_id).then(function (wait) {
                     if (wait == null) {
                         _id = null;
                         localStorage.setItem("#carrinhoid#", _id);
                     }
+                    console.log(wait);
                     resolve(wait);
                 });
             }
@@ -195,7 +245,7 @@ var AppService = (function () {
     };
     AppService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [supermercado_1.SupermercadoProvider, categoria_1.CategoriaProvider, disponibilidade_1.DisponibilidadeProvider, carrinho_2.CarrinhoProvider, router_1.Router])
+        __metadata('design:paramtypes', [supermercado_1.SupermercadoProvider, categoria_1.CategoriaProvider, disponibilidade_1.DisponibilidadeProvider, carrinho_2.CarrinhoProvider, usuario_1.UsuarioProvider, login_1.LoginProvider, router_1.Router])
     ], AppService);
     return AppService;
 }());
